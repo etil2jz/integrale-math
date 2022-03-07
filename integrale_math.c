@@ -3,7 +3,7 @@
  * @author Arthur Blanchot (arthur.blanchot@etu.unilasalle.fr)
  * @brief Programme pour calculer par approximation l'encadrement
  *        d'une intégrale selon les méthodes rectangles, trapèzes.
- * @version 0.1
+ * @version 1.0
  * @date 2022-03-06
  */
 
@@ -16,7 +16,7 @@
 
 // Déclaration de la fonction à intégrer
 long double f(long double x) {
-    return 5*pow(x, 3)+7*x-10; // Remplacez par la fonction que vous souhaitez
+    return sqrt(exp(x)); // Remplacez par la fonction que vous souhaitez
 }
 
 void rectangle(long double a, long double b) {
@@ -24,13 +24,13 @@ void rectangle(long double a, long double b) {
     printf("Combien de rectangles faut-il utiliser ? : ");
     scanf("%i", &n);
     long double h = (b-a)/n; // Sous-intervalles
-    long double S = 0, x; // Variables pour les sommes des aires des sous-intervalles
-    // Boucle pour la somme de 0 à n-1
-    for (int i = 0; i < n; i++) {
-        x = a+i*h;
-        S += f(x)*h;
+    long double aire_inf = 0, aire_sup = 0, x; // Variables pour pouvoir faire ∑aire(rectangle)
+    // Boucle pour la somme de 1 à n-1
+    for (int i = 1; i < n; i++) {
+        aire_inf += h*f(a+i*h);
+        aire_sup += h*f(a+(i+1)*h);
     }
-    printf("\nL'int%cgrale de %Lf %c %Lf avec la m%cthode des rectangles\nest comprise entre %Lf et %Lf", 130, a, 133, b, 130, S-1, S+1); // Résultat
+    printf("\nL'int%cgrale de %Lf %c %Lf avec la m%cthode des rectangles\nest comprise entre %Lf et %Lf", 130, a, 133, b, 130, aire_inf, aire_sup); // Résultat
 }
 
 void trapeze(long double a, long double b) {
@@ -38,13 +38,13 @@ void trapeze(long double a, long double b) {
     printf("Combien de trap%czes faut-il utiliser ? : ", 138);
     scanf("%i", &n);
     long double h = (b-a)/n; // Sous-intervalles
-    long double S = f(a)+f(b), x; // Variables pour les sommes des aires des sous-intervalles
-    // Boucle pour la somme de 0 à n-1
-    for (int i = 0; i < n; i++) {
-        x = a+i*h;
-        S += 2*f(x);
+    long double aire_inf = f(a)+f(b), aire_sup = f(a)+f(b), x; // Variables pour pouvoir faire ∑aire(trapèze)
+    // Boucle pour la somme de 1 à n-1
+    for (int i = 1; i < n; i++) {
+        aire_inf += 2*f(a+i*h);
+        aire_sup += 2*f(a+(i+1)*h);
     }
-    printf("\nL'int%cgrale de %Lf %c %Lf avec la m%cthode des rectangles\nest comprise entre %Lf et %Lf", 130, a, 133, b, 130, S*h/2-1, S*h/2+1); // Résultat
+    printf("\nL'int%cgrale de %Lf %c %Lf avec la m%cthode des trap%czes\nest comprise entre %Lf et %Lf", 130, a, 133, b, 130, 138, aire_inf*h/2, aire_sup*h/2); // Résultat
 }
 
 
